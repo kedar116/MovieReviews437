@@ -1,0 +1,23 @@
+{
+  "name": "moviereviews437",
+  "version": "1.0.0",
+  "description": "\"# MovieReviews437\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kedar116/MovieReviews437.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kedar116/MovieReviews437/issues"
+  },
+  "homepage": "https://github.com/kedar116/MovieReviews437#readme"  
+,
+  "workspaces": [
+      "packages/*"
+  ]
+}
