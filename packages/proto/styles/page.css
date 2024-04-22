@@ -7,8 +7,8 @@ h1 {
     border: var(--color-title-border);
     font-family: var(--display-font);
     background-size: 10px;
-    margin-left: 0.1em;
-    margin-right: 0.1em;
+    margin-left: var(--leftright-margins);
+    margin-right: var(--leftright-margins);
     }
 
     h2{
@@ -20,8 +20,8 @@ h1 {
     font-family: var(--display-font);
     margin-top: 1em;
     margin-bottom: 0.5em;
-    margin-left: 0.1em;
-    margin-right: 0.1em;
+    margin-left: var(--leftright-margins);
+    margin-right: var(--leftright-margins);
     }
 
     h3{
@@ -50,7 +50,7 @@ h1 {
         margin-right: var(--leftright-margins);
     }
 
-    .page-header {
+    header {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -86,6 +86,7 @@ h1 {
     }
     
     .app-name {
+        margin-left: 15em;
         font-size: var(--font-size-large);
         font-weight: var(--font-weight-bold);
         color: var(--color-font-title);
@@ -102,5 +103,103 @@ h1 {
         color: var(--color-font-title);
         font-size: var(--font-size-medium);
     }
+
+    .page {
+        --page-grid-columns: 6;
+        --page-grid-gap: var(--size-spacing-large);
+        display: grid;
+        grid-template-columns:
+        [start] repeat(var(--page-grid-columns), 1fr) [end];
+        padding: 0 calc(0.5 * var(--page-grid-gap));
+        gap: var(--page-grid-gap);
+        align-items: baseline;
+        }
+        
+    .reviews{
+        font-size: var(--font-size-medium);
+    }
+    /* .page > main {
+        display: grid;
+        grid-template-columns: subgrid;
+        grid-column: start / span 4;
+    }
+         */
+        
+    .page > header {
+    grid-column: start / end;
+    }
+    .page > main {
+    grid-column: span 5;
+    }
+
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    table th, table td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd; /* Add borders between rows */
+    }
+
+    table th {
+        background-color: #f2f2f2; /* Light gray background for header row */
+    }
+
+    table tr:nth-child(even) {
+        background-color: #f2f2f2; /* Alternate row background color */
+    }
+
+    table tr:hover {
+        background-color: #ddd; /* Highlight row on hover */
+    }
+
+    .entry {
+        width: 50%;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
     
+    .entry h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    .entry form {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .entry label {
+        margin-bottom: 10px;
+    }
+    
+    .entry input[type="text"],
+    .entry textarea {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+    
+    .entry input[type="submit"] {
+        width: auto;
+        padding: 8px 20px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 3px;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+    }
+    
+    .entry input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
     
