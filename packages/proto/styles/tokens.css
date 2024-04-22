@@ -1,0 +1,30 @@
+:root {
+    /* Color tokens */
+    --color-background-title: #426;
+    --color--background-header: rgb(255, 30, 0);
+    --color-font-ratings: green;
+    --color-background-links: blue;
+    --color-font-title: white;
+    --color-title-border: 1px solid cyan;
+    /* Font tokens */
+    --body-font: sans-serif,serif,monospace;
+    --display-font: serif,monospace;
+    --font-size-small: 14px;
+    --font-size-medium: 16px;
+    --font-size-large: 20px;
+    --font-weight-light:100;
+    --font-weight-normal: 400;
+    --font-weight-bold: 700;
+    /* Spacing tokens */
+    --spacing-small: 8px;
+    --spacing-medium: 16px;
+    --spacing-large: 32px;
+
+    /* Breakpoint tokens */
+    --breakpoint-small: 480px;
+    --breakpoint-medium: 768px;
+    --breakpoint-large: 1024px;
+
+    /* margin tokens */
+    --leftright-margins: 0.1em;
+}

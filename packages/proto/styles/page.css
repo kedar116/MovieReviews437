@@ -1,0 +1,106 @@
+h1 {
+    background-color: var(--color-background-title);
+    color:  var(--color-font-title);
+    text-align: center;
+    font-size: 28px;
+    font-style: bold;
+    border: var(--color-title-border);
+    font-family: var(--display-font);
+    background-size: 10px;
+    margin-left: 0.1em;
+    margin-right: 0.1em;
+    }
+
+    h2{
+    background-color: var(--color--background-header);
+    color: var(--color-font-title);
+    font-size: var(--font-size-large);
+    font-style: bold;
+    border: var(--color-title-border);
+    font-family: var(--display-font);
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    margin-left: 0.1em;
+    margin-right: 0.1em;
+    }
+
+    h3{
+    color: var(--color-font-ratings);
+    font-size: var(--font-size-large);
+    font-style: bold;
+    margin-bottom: 1em;
+    margin-left: var(--leftright-margins);
+    margin-right: var(--leftright-margins);
+    }
+    
+    a{
+        color: var(--color-background-links);
+        font-size: 18px;
+        font-style: bold;
+        margin-left: var(--leftright-margins);
+        margin-right: var(--leftright-margins);
+    }
+
+    body{
+        font-family: var(--body-font);
+        font-weight: var(--font-weight-light);
+        font-size: small;
+        font-style: italic;
+        margin-left: var(--leftright-margins);
+        margin-right: var(--leftright-margins);
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: var(--color-background-title)
+    }
+    
+    .logo-container, .navigation, .user-info {
+        display: flex;
+        align-items: center;
+    }
+    
+    .navigation ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+    }
+    
+    .navigation li {
+        margin-left: 20px;
+    }
+    
+    .navigation a {
+        text-decoration: none;
+        color: var(--color-font-title);
+        font-weight: var(--font-weight-bold);
+    }
+    
+    .logo {
+        height: 50px;
+        margin-right: 10px;
+    }
+    
+    .app-name {
+        font-size: var(--font-size-large);
+        font-weight: var(--font-weight-bold);
+        color: var(--color-font-title);
+    }
+    
+    .user-info .avatar {
+        height: 40px;
+        border-radius: 50%;
+        margin-left: 10px;
+    }
+    
+    .user-name {
+        margin-right: 10px;
+        color: var(--color-font-title);
+        font-size: var(--font-size-medium);
+    }
+    
+    

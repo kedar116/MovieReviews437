@@ -1,9 +1,38 @@
 <!DOCTYPE html>
 <html>
+    <head>
+          <link rel="stylesheet" href="styles/page.css"/>
+          <link rel="stylesheet" href="styles/tokens.css"/>
+          <link rel="stylesheet" href="styles/reset.css"/>
+          <link rel="preconnect" href="https://fonts.googleapis.com">
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+          <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    </head>
+    <body class="page">
     <article class="Movies">
-        <header>
+        <!-- <header>
             <h1>Movie List</h1>
+        </header> -->
+        <header class="page-header">
+            <div class="logo-container">
+                <img src="logo.png" alt="Movie Reviews App Logo" class="logo">
+                <span class="app-name">Movie Reviews App</span>
+            </div>
+            <nav class="navigation">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="entry.html">Add Movie</a></li>
+                    <li><a href="rankings.html">Rankings</a></li>
+                    <!-- <li><a href="reviews.html">Reviews</a></li> -->
+                </ul>
+            </nav>
+            <div class="user-info">
+                <span class="user-name">Jane Doe</span>
+                <img src="user-avatar.png" alt="User Avatar" class="avatar">
+            </div>
         </header>
+
         <section class="movie list">
             <h2>Harry Potter and the Sorcerer's stone</h2>
             <h3>7/10</h3>
@@ -32,12 +61,17 @@
         <a href="about.html">About</a>
 
         <nav class="new entry">
-            <h2><a href="entry.html">Click here to add a new movie</a></h2>
+            <h2 style="color: blue;
+            font-size: 18px; background-color: rgb(26, 255, 0);"><a href="entry.html"><span style="
+                color: blue;
+                font-size: 24px;
+               ">Click here to add a new movie</span></a></h2>
 
         </nav>
 
        
 
     </article>
+    </body>
 
 </html>
