@@ -1,0 +1,29 @@
+.movie-details-custom h1 {
+    background-color: rgb(rgba(255, 0, 144, 0.371));
+    color:  var(--color-font-title);
+    text-align: center;
+    font-size: 18px;
+    font-style: bold;
+    font-family: var(--display-font);
+    background-size: 10px;
+    margin-left: var(--leftright-margins);
+    margin-right: var(--leftright-margins);
+    }
+
+.movie-details-custom  h2{
+        background-color: var(--color-font-ratings);
+        color: navajowhite;
+        font-size: var(--font-size-medium);
+        font-style: bold;
+        border: var(--color-title-border);
+        font-family: var(--display-font);
+        margin-top: 1em;
+        margin-bottom: 0.5em;
+        margin-left: var(--leftright-margins);
+        margin-right: var(--leftright-margins);
+        }
+
+p{
+    font-size: var(--font-size-small);
+    font-family: var(--body-font);
+}

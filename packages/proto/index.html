@@ -7,6 +7,10 @@
           <link rel="preconnect" href="https://fonts.googleapis.com">
           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
           <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+          <script src="js/load.js">
+           
+            </script>
+            
     </head>
     <body class="page">
         <header>
@@ -29,20 +33,29 @@
             </div>
         </header>
         <main>
-        <section class="movie list">
+        <section class="movie-list">
+            <section class="movie">
             <h2>Harry Potter and the Sorcerer's stone</h2>
             <h3>7/10</h3>
             <img src="static/Harry.png" height="200",width='200'>
             <br>
             <a href="reviews.html">Go to Reviews</a>
-            <!--Ratings go here-->
+            <!-- <a href="#" onclick="loadDetails('details.html',event.target.closest('section'))">Movie Details</a> -->
+            <a href ="#" onclick="loadDetails('details.html', this.closest('.movie'))">Movie Details</a>
+            <!--Details go here-->
+            </section>
 
+            <section class="movie">
             <h2>Oppenheimer</h2>
             <h3>8.5/10</h3>
             <img src="static/oppenheimer.png" height="200",width='200'>
             <br>
             <a href="reviews.html">Go to Reviews</a>
-            <!--Ratings go here-->
+            <!-- <a href="#" onclick="loadDetails('details.html',event.target.closest('section'))">Movie Details</a> -->
+            <a href ="#" onclick="loadDetails('details.html', this.closest('.movie'))">Movie Details</a>
+
+            <!--Details go here-->
+            </section>
 
         </section>
         <br>
@@ -64,6 +77,7 @@
                ">Click here to add a new movie</span></a></h2>
 
         </nav>
+        <div id="content"></div>
 
 </main>
     </body>
