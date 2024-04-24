@@ -6,6 +6,7 @@
     --color-background-links: blue;
     --color-font-title: white;
     --color-title-border: 1px solid cyan;
+    --color-font-details: navajowhite;
 
     /* Font tokens */
     --body-font: sans-serif,serif,monospace;
@@ -39,4 +40,16 @@
         --color-font-title: white;
         --color-title-border: 1px solid cyan;
       }
+    
+    body.dark-mode .movie-details-custom h2 {
+       --color-font-ratings:darkgreen; 
+       --color-font-details:white;
+     
+    }
+    
+    body.dark-mode .movie-details-custom p {
+        color: white; 
+    
+    }
+
 }

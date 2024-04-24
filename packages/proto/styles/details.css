@@ -12,7 +12,7 @@
 
 .movie-details-custom  h2{
         background-color: var(--color-font-ratings);
-        color: navajowhite;
+        color: var(--color-font-details);
         font-size: var(--font-size-medium);
         font-style: bold;
         border: var(--color-title-border);
@@ -23,7 +23,9 @@
         margin-right: var(--leftright-margins);
         }
 
-p{
+.movie-details-custom p{
     font-size: var(--font-size-small);
     font-family: var(--body-font);
 }
+
+
