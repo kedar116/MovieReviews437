@@ -28,4 +28,15 @@
 
     /* margin tokens */
     --leftright-margins: 0.1em;
+
+
+    body.dark-mode {
+        background-color: black;
+        --color-background-title: #426;
+        --color--background-header: rgb(227, 83, 63);
+        --color-font-ratings: lightgreen;
+        --color-background-links: lightblue;
+        --color-font-title: white;
+        --color-title-border: 1px solid cyan;
+      }
 }
