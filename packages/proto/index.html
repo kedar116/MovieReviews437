@@ -10,19 +10,35 @@
           <script src="js/load.js">
             </script>
 
-          <script type="module"> 
-                const page = document.body;
-                page.addEventListener("change", (event) => {
-                const checked = event.target.checked;
-                page.classList.toggle("dark-mode", checked);
-                });
+          <script type="text/javascript"> 
 
-            </script>
+            function relayEvent(event, customType, detail) {
+                const relay = event.currentTarget;
+                const customEvent = new CustomEvent(customType, {
+                bubbles: true,
+                detail,
+            });
+                relay.dispatchEvent(customEvent);
+                event.stopPropagation();
+            };
+
+            document.addEventListener('DOMContentLoaded', (event) => {
+            document.body.addEventListener("dark-mode", (event) => {
+                const page = document.body; 
+                const checked = event.detail.checked;
+                page.classList.toggle("dark-mode", checked);
+            });
+        });
+
+        </script>
         
     </head>
     <body class="page">
         <header>              
-            <label style="color:white"><input type="checkbox" autocomplete="off" />Dark Mode</label>
+            <label style="color:white" onchange="relayEvent(
+                event,
+                'dark-mode',
+                {checked: event.target.checked})"><input type="checkbox" autocomplete="off" />Dark Mode</label>
             <div class="logo-container">
                 <img src="logo.png" alt="Movie Reviews App Logo" class="logo">
                 <span class="app-name">Movie Reviews App</span>
