@@ -7,11 +7,12 @@
           <link rel="preconnect" href="https://fonts.googleapis.com">
           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
           <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-          <script src="js/load.js">
-            </script>
+          <script src="js/load.js"></script>     
+          <script type="module" src="js/drop-down.js"></script>
 
           <script type="text/javascript"> 
 
+            const parser = new DOMParser();
             function relayEvent(event, customType, detail) {
                 const relay = event.currentTarget;
                 const customEvent = new CustomEvent(customType, {
@@ -31,17 +32,30 @@
         });
 
         </script>
+
         
     </head>
     <body class="page">
         <header>              
-            <label style="color:white" onchange="relayEvent(
+            <!-- <label style="color:white" onchange="relayEvent(
                 event,
                 'dark-mode',
                 {checked: event.target.checked})"><input type="checkbox" autocomplete="off" />Dark Mode</label>
+             -->
+
             <div class="logo-container">
                 <img src="logo.png" alt="Movie Reviews App Logo" class="logo">
-                <span class="app-name">Movie Reviews App</span>
+      
+                <drop-down>
+                    <label style="color:white"
+                      onchange="relayEvent(
+                      event, 
+                      'dark-mode', 
+                      {checked: event.target.checked})">
+                      <input type="checkbox" autocomplete="off" /> Dark mode
+                    </label>
+                  </drop-down>
+            <span class="app-name">Movie Reviews App</span>
             </div>
             <nav class="navigation">
                 <ul>
@@ -52,6 +66,8 @@
                     <!-- <li><a href="reviews.html">Reviews</a></li> -->
                 </ul>
             </nav>
+    
+
             <div class="user-info">
                 <span class="user-name">Jane Doe</span>
                 <img src="user-avatar.png" alt="User Avatar" class="avatar">

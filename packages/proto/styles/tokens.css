@@ -52,4 +52,8 @@
     
     }
 
+   body.dark-mode .movie-details-custom .list{
+        color:white
+    }
+
 }
