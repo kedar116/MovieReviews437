@@ -15,9 +15,13 @@
   "bugs": {
     "url": "https://github.com/kedar116/MovieReviews437/issues"
   },
-  "homepage": "https://github.com/kedar116/MovieReviews437#readme"  
-,
+  "homepage": "https://github.com/kedar116/MovieReviews437#readme",
   "workspaces": [
-      "packages/*"
-  ]
+    "packages/*"
+  ],
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "mongodb": "^6.6.0",
+    "mongoose": "^8.3.3"
+  }
 }
