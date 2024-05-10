@@ -16,6 +16,7 @@ const ProfileSchema = new Schema<Profile>(
 const ProfileModel = model<Profile>("Profile", ProfileSchema);
 
 function index(): Promise<Profile[]> {
+    
     return ProfileModel.find();
   }
   
