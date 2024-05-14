@@ -9,7 +9,7 @@ const ProfileSchema = new Schema<Profile>(
         avatar: String,
         color: String
     },
-    {collection: "user_profiles" }
+    {collection: "user_profiles" } 
 
 );
 
@@ -45,7 +45,38 @@ function get(userid: string): Promise<Profile> {
     return p.save();
   }
 
-  export default { index, get, create };
+
+  function update(
+    userid: String,
+    profile: Profile
+  ): Promise<Profile> {
+    return ProfileModel.findOne({ id: userid })
+      .then((found) => {
+        if (!found) throw `${userid} Not Found`;
+        else
+          return ProfileModel.findByIdAndUpdate(
+            found._id,
+            profile,
+            {
+              new: true
+            }
+          );
+      })
+      .then((updated) => {
+        if (!updated) throw `${userid} not updated`;
+        else return updated as Profile;
+      });
+  }
+
+  function remove(userid: String): Promise<void> {
+    return ProfileModel.findOneAndDelete({ userid }).then(
+      (deleted) => {
+        if (!deleted) throw `${userid} not deleted`;
+      }
+    );
+  }
+
+  export default { index, get, create, update, remove };
   
 
 // let profiles: Array<Profile> =[
