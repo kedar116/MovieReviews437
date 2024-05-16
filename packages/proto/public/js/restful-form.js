@@ -1,4 +1,5 @@
 import { prepareTemplate } from "./template.js";
+import { Observer } from "@calpoly/mustang";
 
 export class RestfulFormElement extends HTMLElement {
   static observedAttributes = ["src", "new"];
@@ -83,27 +84,51 @@ export class RestfulFormElement extends HTMLElement {
     });
   }
 
-  connectedCallback() {
-    console.log(`ConnectedCallback: src=`, this.src);
+  _authObserver = new Observer(this, "blazing:auth");
+  get authorization() {
+    console.log("Authorization for user, ", this._user);
+    return (
+      this._user?.authenticated && {
+        Authorization: `Bearer ${this._user.token}`
+      }
+    );
   }
 
+
+  connectedCallback() {
+    this._authObserver.observe(({ user }) => {
+      console.log("Setting user as effect of change", user);
+      this._user = user;
+      if (this.src) {
+        console.log("Loading JSON", this.authorization);
+        loadJSON(
+          this.src,
+          this,
+          renderSlots,
+          this.authorization
+        );
+      } else {
+        console.log("No src set to load JSON from");
+      }
+    });
+
+}
+
+
   attributeChangedCallback(name, oldValue, newValue) {
-    console.log(
-      `restful-form: Attribute ${name} changed from ${oldValue} to`,
-      newValue
-    );
     switch (name) {
       case "src":
         if (newValue && newValue !== oldValue && !this.isNew) {
-          fetchData(this.src).then((json) => {
-            this._state = json;
-            populateForm(json, this);
-          });
+          fetchData(this.src, this.authorization).then(
+            (json) => {
+              this._state = json;
+              populateForm(json, this);
+            }
+          );
         }
         break;
       case "new":
         if (newValue) {
-          console.log("Blanking state for new form");
           this._state = {};
           populateForm({}, this);
         }
@@ -114,18 +139,18 @@ export class RestfulFormElement extends HTMLElement {
 
 customElements.define("restful-form", RestfulFormElement);
 
-export function fetchData(src) {
-  return fetch(src)
-    .then((response) => {
-      if (response.status !== 200) {
-        throw `Status: ${response.status}`;
-      }
-      return response.json();
-    })
-    .catch((error) =>
-      console.log(`Failed to load form from ${src}:`, error)
-    );
-}
+export function fetchData(src, authorization) {
+    return fetch(src, { headers: authorization })
+      .then((response) => {
+        if (response.status !== 200) {
+          throw `Status: ${response.status}`;
+        }
+        return response.json();
+      })
+      .catch((error) =>
+        console.log(`Failed to load form from ${src}:`, error)
+      );
+  }
 
 function populateForm(json, formBody) {
   const entries = Object.entries(json);
@@ -149,16 +174,24 @@ function populateForm(json, formBody) {
   return json;
 }
 
-function submitForm(src, json, method = "PUT") {
-  return fetch(src, {
-    method,
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(json)
-  })
-    .then((res) => {
-      if (res.status != 200 && res.status != 201)
-        throw `Form submission failed: Status ${res.status}`;
-      return res.json();
+function submitForm(
+    src,
+    json,
+    method = "PUT",
+    authorization = {}
+  ) {
+    return fetch(src, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        ...authorization
+      },
+      body: JSON.stringify(json)
     })
-    .catch((err) => console.log("Error submitting form:", err));
-}
+      .then((res) => {
+        if (res.status != 200 && res.status != 201)
+          throw `Form submission failed: Status ${res.status}`;
+        return res.json();
+      })
+      .catch((err) => console.log("Error submitting form:", err));
+  }

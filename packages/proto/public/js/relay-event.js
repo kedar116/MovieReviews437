@@ -13,4 +13,4 @@ export function relayEvent(event, customType, detail) {
   
     relay.dispatchEvent(customEvent);
     event.stopPropagation();
-  }
+  } 
