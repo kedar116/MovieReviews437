@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com" />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,200;0,400;0,700;1,700&family=Merriweather:wght@400;700&display=swap"
+      rel="stylesheet" />
+    <link rel="stylesheet" href="/styles/reset.css" />
+    <link rel="stylesheet" href="/styles/tokens.css" />
+    <script type="module">
+      import { define, Auth } from "@calpoly/mustang";
+      import { SignupFormElement } from "/src/components/signup-form";
+
+      define({
+        "mu-auth": Auth.Provider,
+        "signup-form": SignupFormElement
+      });
+    </script>
+    <style>
+      * {
+           box-sizing: border-box;
+           margin: 0;
+           padding: 0;
+       }
+
+       body, html {
+           height: 100%;
+           font-family: 'Roboto', sans-serif;
+           background: linear-gradient(to right, #6a11cb, #2575fc);
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           color: white;
+       }
+
+       .page {
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+           width: 100%;
+           max-width: 340px;
+           box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+           padding: 20px;
+           background: rgba(255,255,255,0.1);
+           backdrop-filter: blur(10px);
+           border-radius: 12px;
+       }
+
+       .card {
+           width: 100%;
+           margin: 20px 0;
+       }
+
+       h2 {
+           margin-bottom: 1rem;
+           font-size: 2rem;
+           font-weight: 700;
+           text-transform: uppercase;
+           background: -webkit-linear-gradient(left, #fceabb, #f8b500);
+           -webkit-background-clip: text;
+           -webkit-text-fill-color: transparent;
+       }
+
+       label {
+           display: block;
+           margin: 10px 0;
+       }
+
+       input[type="text"], input[type="password"] {
+           width: 100%;
+           padding: 10px;
+           margin-top: 5px;
+           border: 2px solid #fff;
+           border-radius: 4px;
+           background: rgba(255,255,255,0.8);
+           transition: all 0.3s;
+           color: #333;
+       }
+
+       input[type="text"]:focus, input[type="password"]:focus {
+           border-color: #ffd700;
+           outline: none;
+       }
+
+       button {
+           width: 100%;
+           padding: 10px;
+           background: #f8b500;
+           color: white;
+           border: none;
+           border-radius: 4px;
+           cursor: pointer;
+           font-size: 1rem;
+           font-weight: bold;
+           margin-top: 15px;
+           transition: background 0.3s;
+       }
+
+       button:hover {
+           background: #ffbf00;
+       }
+
+       a {
+           color: #ffd700;
+           text-decoration: none;
+       }
+
+       a:hover {
+           text-decoration: underline;
+       }
+
+       /* Dark mode adjustments */
+       .dark-mode {
+           background: linear-gradient(to left, #0f2027, #203a43, #2c5364);
+       }
+    </style>
+  </head>
+  <body class="page">
+    <mu-auth>
+      <h2>New User Registration</h2>
+      <main class="card">
+        <signup-form>
+          <label>
+            <span>Username:</span>
+            <input name="username" autocomplete="off" />
+          </label>
+          <label>
+            <span>Password:</span>
+            <input type="password" name="password" />
+          </label>
+        </signup-form>
+      </main>
+      <p>
+        Already have an account and want to
+        <a href="./login.html">Log In</a>
+        instead?
+      </p>
+    </mu-auth>
+  </body>
+</html>

@@ -4,6 +4,7 @@ import profiles from "./routes/profiles";
 import { connect } from "./services/mongo";
 import auth, {authenticateUser} from "./routes/auth";
 import path from "path";
+import fs from "node:fs/promises";
 
 connect("movies")
 
@@ -29,8 +30,21 @@ app.use("/node_modules", express.static(nodeModules));
 app.use("/api/profiles", authenticateUser, profiles);
 
 
-app.get("/hello", (req: Request, res: Response) => {
-    res.send("Hello, World");
+app.get("/hello", (_: Request, res: Response) => {
+  res.send(
+    `<h1>Hello!</h1>
+     <p>Server is up and running.</p>
+     <p>Serving static files from <code>${staticDir}</code>.</p>
+    `
+  );
+});
+
+// SPA Routes: /app/...
+app.use("/app", (req: Request, res: Response) => {
+  const indexHtml = path.resolve(staticDir, "index.html");
+  fs.readFile(indexHtml, { encoding: "utf8" }).then((html) =>
+    res.send(html)
+  );
 });
 
 
