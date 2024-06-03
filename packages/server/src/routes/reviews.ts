@@ -3,11 +3,19 @@ import express from 'express';
 import reviewService from '../services/review-svc';
 import movieService from '../services/movie-svc';
 import {Movie, MovieDocument} from '../models/movie';
-import {Review} from "../models/Review";
-import { ReviewDocument } from '../models/Review';
+
 import { UpdateQuery } from 'mongoose';
 
 const router = express.Router();
+
+router.get("/", async (req, res) => {
+    try {
+      const reviews = await reviewService.getAllReviews();
+      res.json(reviews);
+    } catch (err) {
+      res.status(500).json({ message: (err as Error).message });
+    }
+  });
 
 
 router.get('/:movieName', async (req, res) => {
@@ -20,6 +28,7 @@ router.get('/:movieName', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+  console.log('Received request to add review:', req.body);
     try {
       const review = await reviewService.addReview(req.body);
       const update: UpdateQuery<MovieDocument> = {

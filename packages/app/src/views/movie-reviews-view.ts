@@ -15,6 +15,7 @@ export class MovieReviewsViewElement extends View<Model, Msg> {
   constructor() {
     super("blazing:model");
     this.fetchReviews();
+    console.log("view loaded");
   }
 
   async fetchReviews() {
@@ -23,6 +24,7 @@ export class MovieReviewsViewElement extends View<Model, Msg> {
   }
 
   render() {
+    console.log("I AM HERE ")
     return html`
       <article class="reviews">
         <h1>${this.movieName}</h1>

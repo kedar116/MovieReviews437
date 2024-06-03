@@ -9,9 +9,10 @@ import { ProfileViewElement } from "./views/profile-view";
 import { AboutViewElement } from "./views/about-view";
 import { HomeViewElement } from "./views/home-view";
 import {MovieReviewsViewElement} from "./views/movie-reviews-view";
-// import {AddMovieViewElement} from "./views/add-movie-view"
+import {AddMovieViewElement} from "./views/add-movie-view"
 import { BlazingHeaderElement } from "./components/blazing-header";
 import {AddReviewViewElement} from "./views/add-review-view";
+
 
 const routes = [
   
@@ -21,6 +22,8 @@ const routes = [
       <profile-view user-id=${params.id}></profile-view>
     `
   },
+  
+
   {
     path: "/app/about",
     view: () => html`
@@ -31,14 +34,17 @@ const routes = [
     path: "app/add-movie",
     view: () => html`<add-movie-view></add-movie-view>`
   },
-  // {
-  //   path: "app/reviews/:movieName",
-  //   view: (params) => html`<movie-reviews-view movieName=${params.movieName}></movie-reviews-view>`
-  // },
-  // {
-  //   path: "app/add-review/:movieName",
-  //   view: (params) => html`<add-review-view movieName=${params.movieName}></add-review-view>`
-  // },
+  
+  {
+    path: "app/movie-reviews/:movieName",
+    view: (params:Switch.Params) => html`<movie-reviews-view movieName=${params.movieName}></movie-reviews-view>`
+  },
+  {
+    path: "/app/add-review",
+    view: () => html`
+      <add-review-view></add-review-view>
+    `
+  },
   {
     path: "/app",
     view: () => html`
@@ -75,6 +81,6 @@ define({
   "home-view": HomeViewElement,
   "movie-reviews-view": MovieReviewsViewElement,
   "add-review-view": AddReviewViewElement,
-  // "add-movie-view": AddMovieViewElement
+  "add-movie-view": AddMovieViewElement
   
 });

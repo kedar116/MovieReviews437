@@ -12,4 +12,4 @@ export interface Model {
   reviews?: Review[];
 }
 
-export const init: Model = { movies: [], reviews: [] };
+export const init: Model = { };

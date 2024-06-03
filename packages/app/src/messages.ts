@@ -6,17 +6,17 @@ import { Movie } from "./server/models/Movie";
 import { Review } from "./server/models/Review";
 
 export type Msg =
-  | ["profile/select", { userid: string }]
+  | ["profile/select", { id: string }]
   | [
     "profile/save",
     {
-      userid: string;
+      id: string;
       profile: Profile;
       onSuccess?: () => void;
       onFailure?: (err: Error) => void;
     }
   ]
-  | ["movies/fetch", { onSuccess?: () => void; onFailure?: (err: Error) => void }]
+  | ["movies/fetch"]
   | [
       "movies/add",
       {

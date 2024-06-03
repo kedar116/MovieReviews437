@@ -31,63 +31,71 @@ export default function update(
       break;
 
     case "movies/fetch":
-      fetchMovies()
-        .then((movies) => {
+      // fetchMovies()
+      //   .then((movies) => {
+      //     apply((model) => ({ ...model, movies }));
+      //     message[1].onSuccess?.();
+      //   })
+      //   .catch((error: Error) => {
+      //     message[1].onFailure?.(error);
+      //   });
+      // break;
+      fetchMovies(user).then((movies: Movie[] | undefined) =>
+        {
+          console.log("i get this : ",movies)
           apply((model) => ({ ...model, movies }));
-          message[1].onSuccess?.();
-        })
-        .catch((error: Error) => {
-          message[1].onFailure?.(error);
-        });
+        }
+
+      );
       break;
 
-    case "movies/add":
-      addMovie(message[1].movie)
-        .then((movie) => {
-          apply((model) => ({ ...model, movies: [...(model.movies || []), movie] }));
-          message[1].onSuccess?.(movie);
-        })
-        .catch((error: Error) => {
-          message[1].onFailure?.(error);
-        });
-      break;
+    // case "movies/add":
+    //   addMovie(message[1].movie)
+    //     .then((movie) => {
+    //       apply((model) => ({ ...model, movies: [...(model.movies || []), movie] }));
+    //       message[1].onSuccess?.(movie);
+    //     })
+    //     .catch((error: Error) => {
+    //       message[1].onFailure?.(error);
+    //     });
+    //   break;
 
-    case "reviews/fetch":
-      fetchReviews(message[1].movieName)
-        .then((reviews) => {
-          apply((model) => ({ ...model, reviews }));
-          message[1].onSuccess?.(reviews);
-        })
-        .catch((error: Error) => {
-          message[1].onFailure?.(error);
-        });
-      break;
+    // case "reviews/fetch":
+    //   fetchReviews(message[1].movieName)
+    //     .then((reviews) => {
+    //       apply((model) => ({ ...model, reviews }));
+    //       message[1].onSuccess?.(reviews);
+    //     })
+    //     .catch((error: Error) => {
+    //       message[1].onFailure?.(error);
+    //     });
+    //   break;
 
-    case "reviews/add":
-      addReview(message[1].review)
-        .then((review) => {
-          apply((model) => ({ ...model, reviews: [...(model.reviews || []), review] }));
-          message[1].onSuccess?.(review);
-        })
-        .catch((error: Error) => {
-          message[1].onFailure?.(error);
-        });
-      break;
+    // case "reviews/add":
+    //   addReview(message[1].review)
+    //     .then((review) => {
+    //       apply((model) => ({ ...model, reviews: [...(model.reviews || []), review] }));
+    //       message[1].onSuccess?.(review);
+    //     })
+    //     .catch((error: Error) => {
+    //       message[1].onFailure?.(error);
+    //     });
+    //   break;
 
-    default:
-      const unhandled: never = message[0];
-      throw new Error(`Unhandled Auth message "${unhandled}"`);
+    // default:
+    //   const unhandled: never = message[0];
+    //   throw new Error(`Unhandled Auth message "${unhandled}"`);
   }
 }
 
 function saveProfile(
   msg: {
-    userid: string;
+    id: string;
     profile: Profile;
   },
   user: Auth.User
 ) {
-  return fetch(`/api/profiles/${msg.userid}`, {
+  return fetch(`/api/profiles/${msg.id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -106,10 +114,10 @@ function saveProfile(
 }
 
 function selectProfile(
-  msg: { userid: string },
+  msg: { id: string },
   user: Auth.User
 ) {
-  return fetch(`/api/profiles/${msg.userid}`, {
+  return fetch(`/api/profiles/${msg.id}`, {
     headers: Auth.headers(user)
   })
     .then((response: Response) => {
@@ -126,12 +134,32 @@ function selectProfile(
     });
 }
 
-function fetchMovies(): Promise<Movie[]> {
-  return fetch("/api/movies")
-    .then((response) => response.json())
-    .catch((err) => {
-      console.error("Error fetching movies:", err);
-      return [];
+// function fetchMovies(): Promise<Movie[]> {
+//   return fetch("/api/movies")
+//     .then((response) => response.json())
+//     .catch((err) => {
+//       console.error("Error fetching movies:", err);
+//       return [];
+//     });
+// }
+
+
+function fetchMovies(user: Auth.User) {
+  console.log("PLEASEE")
+  return fetch("/api/movies", {
+    headers: Auth.headers(user)
+  })
+    .then((response: Response) => {
+      if (response.status !== 200)
+        throw `Failed to load movies`;
+      return response.json();
+    })
+    .then((json: unknown) => {
+      if (json) {
+        console.log("Movie",json);
+        
+        return json as Movie;
+      }
     });
 }
 

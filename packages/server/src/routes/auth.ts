@@ -64,6 +64,7 @@ router.post("/login", (req: Request, res: Response) => {
     res: Response,
     next: NextFunction
   ) {
+    console.log("came here to try ")
     const authHeader = req.headers["authorization"];
     //Getting the 2nd part of the auth header (the token)
     const token = authHeader && authHeader.split(" ")[1];

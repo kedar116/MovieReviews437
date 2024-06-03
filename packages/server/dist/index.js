@@ -27,6 +27,8 @@ var import_mongo = require("./services/mongo");
 var import_auth = __toESM(require("./routes/auth"));
 var import_path = __toESM(require("path"));
 var import_promises = __toESM(require("node:fs/promises"));
+var import_reviews = __toESM(require("./routes/reviews"));
+var import_movies = __toESM(require("./routes/movies"));
 (0, import_mongo.connect)("movies");
 const app = (0, import_express.default)();
 const port = process.env.PORT || 3e3;
@@ -42,6 +44,8 @@ const nodeModules = import_path.default.resolve(
 console.log("Serving NPM packages from", nodeModules);
 app.use("/node_modules", import_express.default.static(nodeModules));
 app.use("/api/profiles", import_auth.authenticateUser, import_profiles.default);
+app.use("/api/reviews", import_auth.authenticateUser, import_reviews.default);
+app.use("/api/movies", import_auth.authenticateUser, import_movies.default);
 app.get("/hello", (_, res) => {
   res.send(
     `<h1>Hello!</h1>

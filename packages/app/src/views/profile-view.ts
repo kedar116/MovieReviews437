@@ -41,7 +41,7 @@ class ProfileViewer extends LitElement {
         </nav>
         <dl>
           <dt>Username</dt>
-          <dd><slot name="userid"></slot></dd>
+          <dd><slot name="id"></slot></dd>
           <dt>Nickname</dt>
           <dd><slot name="nickname"></slot></dd>
         </dl>
@@ -115,7 +115,7 @@ class ProfileEditor extends LitElement {
         <mu-form .init=${this.init}>
           <label>
             <span>Username</span>
-            <input disabled name="userid" />
+            <input disabled name="id" />
           </label>
           <label>
             <span>Avatar</span>
@@ -194,7 +194,7 @@ export class ProfileViewElement extends View<Model, Msg> {
   edit = false;
 
   @property({ attribute: "user-id", reflect: true })
-  userid = "";
+  id = "";
 
   @state()
   get profile(): Profile | undefined {
@@ -230,7 +230,7 @@ export class ProfileViewElement extends View<Model, Msg> {
       console.log("Profiler Page:", newValue);
       this.dispatchMessage([
         "profile/select",
-        { userid: newValue }
+        { id: newValue }
       ]);
     }
   }
@@ -272,7 +272,7 @@ export class ProfileViewElement extends View<Model, Msg> {
           <profile-viewer username=${id}>
             ${fields}
             <span slot="name">${name}</span>
-            <span slot="userid">${id}</span>
+            <span slot="id">${id}</span>
             <span slot="nickname">${nickname}</span>
           </profile-viewer>
         `;
@@ -286,11 +286,11 @@ export class ProfileViewElement extends View<Model, Msg> {
     this.dispatchMessage([
       "profile/save",
       {
-        userid: this.userid,
+        id: this.id,
         profile,
         onSuccess: () =>
           History.dispatch(this, "history/navigate", {
-            href: `/app/profile/${this.userid}`
+            href: `/app/profile/${this.id}`
           }),
         onFailure: (error: Error) =>
           console.log("ERROR:", error)

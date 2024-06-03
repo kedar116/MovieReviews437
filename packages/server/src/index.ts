@@ -5,6 +5,8 @@ import { connect } from "./services/mongo";
 import auth, {authenticateUser} from "./routes/auth";
 import path from "path";
 import fs from "node:fs/promises";
+import reviewRoutes from './routes/reviews';
+import movieRoutes from './routes/movies'
 
 connect("movies")
 
@@ -28,6 +30,8 @@ app.use("/node_modules", express.static(nodeModules));
 
 
 app.use("/api/profiles", authenticateUser, profiles);
+app.use('/api/reviews', authenticateUser, reviewRoutes);
+app.use("/api/movies", authenticateUser, movieRoutes);
 
 
 app.get("/hello", (_: Request, res: Response) => {

@@ -1,6 +1,6 @@
 // server/services/review-svc.ts
 import { Schema, model } from 'mongoose';
-import { ReviewDocument } from '../models/Review';
+import { ReviewDocument } from '../models/review';
 
 const reviewSchema = new Schema<ReviewDocument>({
   movieName: { type: String, required: true },

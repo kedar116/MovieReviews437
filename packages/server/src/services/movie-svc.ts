@@ -1,7 +1,7 @@
 // server/services/movie-svc.ts
 import { Schema, model, Document } from 'mongoose';
 import { Movie,MovieDocument } from '../models/movie';
-import { ReviewDocument } from '../models/Review';
+
 import { UpdateQuery } from 'mongoose';
 
 const movieSchema = new Schema<MovieDocument>({

@@ -34,7 +34,7 @@ export class BlazingHeaderElement extends View<Model, Msg> {
         this.username = user.username;
         this.dispatchMessage([
           "profile/select",
-          { userid: this.username }
+          { id: this.username }
         ]);
       } else if (!user) {
         this.username = "anonymous";
@@ -61,7 +61,7 @@ export class BlazingHeaderElement extends View<Model, Msg> {
         <ul>
           <li><a href="/app">Home</a></li>
           <li><a href="/app/about">About</a></li>
-          <li><a href="/app/add">Add Movie</a></li>
+          <li><a href="/app/add-review">Add Review</a></li>
           <li><a href="/app/rankings">Rankings</a></li>
         </ul>
       </nav>

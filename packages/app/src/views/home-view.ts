@@ -1,254 +1,158 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { define } from '@calpoly/mustang';
+import { Auth, define } from '@calpoly/mustang';
 import { View } from "@calpoly/mustang";
 import { Msg } from "../messages";
 import { Model } from "../model";
 import { Movie } from 'server/models';
+import resetCSS from "../css/reset";
 
 export class HomeViewElement extends View<Model, Msg> {
   @state()
-  movies: Movie[] = [];
+  get movies(): Movie[] {
+    return this.model.movies || [];
+  }
+
+
 
   constructor() {
     super("blazing:model");
-    this.fetchMovies();
+    // this.fetchMovies();
+    
   }
 
-  async fetchMovies() {
-    const response = await fetch('/api/movies');
-    this.movies = await response.json();
+//   async fetchMovies() {
+//     try {
+//         const response = await fetch('/api/movies',, {
+//             method: 'GET', // or 'POST', 'PUT', etc.
+//             headers: Auth.headers(Auth.AuthenticatedUser),
+//           });
+//         console.log("ERROR : ",response)
+//         this.movies = await response.json();
+        
+//     } catch (error) {
+//         console.log("I TRIED")
+//         console.log()
+//     }
+
+    
+//   }
+
+connectedCallback() {
+    super.connectedCallback();
+    console.log("Fetching movies...");
+    this.dispatchMessage(["movies/fetch"]);
+    
+    console.log("Hi");  
+    
   }
 
-  render() {
+  render(): TemplateResult {
+    const renderItem = (movie: Movie) => {
+      const { name, img, rating, reviews } = movie;
+      console.log("This is it",movie,name,img,rating,reviews);
+
+      return html`
+        <div class="movie">
+          <h2>${name}</h2>
+          <img src="${img}" alt="${name}" class="movie-image" />
+          <p>Rating: ${rating}/10</p>
+          
+          <a href="/app/reviews/${name}">Go to Reviews</a>
+        </div>
+      `;
+    };
+
+    console.log("Rendering movies:", this.movies);
     return html`
-      <section class="movie-list">
-        ${this.movies.map(
-          movie => html`
-            <section class="movie">
-              <h2>${movie.name}</h2>
-              <h3>${movie.rating}/10</h3>
-              <img src="${movie.img}" height="200" width="200">
-              <br>
-              <a href="/reviews/${movie.name}">Go to Reviews</a>
-            </section>
-          `
-        )}
-      </section>
+      <main class="page">
+        <header>
+          <h2>Movie List</h2>
+        </header>
+        <div class="movie-list">
+          ${this.movies.map(renderItem)}
+        </div>
+      </main>
     `;
   }
 
-  static styles = css`
-    /* Your CSS styles here */
-    h1 {
-    background-color: var(--color-background-title);
-    color:  var(--color-font-title);
-    text-align: center;
-    font-size: 28px;
-    font-style: bold;
-    border: var(--color-title-border);
-    font-family: var(--display-font);
-    background-size: 10px;
-    margin-left: var(--leftright-margins);
-    margin-right: var(--leftright-margins);
-    }
-
-    h2{
-    background-color: var(--color--background-header);
-    color: var(--color-font-title);
-    font-size: var(--font-size-large);
-    font-style: bold;
-    border: var(--color-title-border);
-    font-family: var(--display-font);
-    margin-top: 1em;
-    margin-bottom: 0.5em;
-    margin-left: var(--leftright-margins);
-    margin-right: var(--leftright-margins);
-    }
-
-    h3{
-    color: var(--color-font-ratings);
-    font-size: var(--font-size-large);
-    font-style: bold;
-    margin-bottom: 1em;
-    margin-left: var(--leftright-margins);
-    margin-right: var(--leftright-margins);
-    }
-    
-    a{
-        color: var(--color-background-links);
-        font-size: 18px;
-        font-style: bold;
-        margin-left: var(--leftright-margins);
-        margin-right: var(--leftright-margins);
-    }
-
-    body{
-        font-family: var(--body-font);
-        font-weight: var(--font-weight-light);
-        font-size: small;
-        font-style: italic;
-        margin-left: var(--leftright-margins);
-        margin-right: var(--leftright-margins);
-    }
-
-    header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px 20px;
-        background-color: var(--color-background-title)
-    }
-    
-    .logo-container, .navigation, .user-info {
-        display: flex;
-        align-items: center;
-    }
-    
-    .navigation ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-    }
-    
-    .navigation li {
-        margin-left: 20px;
-    }
-    
-    .navigation a {
-        text-decoration: none;
-        color: var(--color-font-title);
-        font-weight: var(--font-weight-bold);
-    }
-    
-    .logo {
-        height: 50px;
-        margin-right: 10px;
-    }
-    
-    .app-name {
-        margin-left: 15em;
-        font-size: var(--font-size-large);
-        font-weight: var(--font-weight-bold);
-        color: var(--color-font-title);
-    }
-    
-    .user-info .avatar {
-        height: 40px;
-        border-radius: 50%;
-        margin-left: 10px;
-    }
-    
-    .user-name {
-        margin-right: 10px;
-        color: var(--color-font-title);
-        font-size: var(--font-size-medium);
-    }
-
-    .page {
-        --page-grid-columns: 6;
-        --page-grid-gap: var(--size-spacing-large);
+  static styles = [
+    resetCSS,
+    css`
+      :host {
+        display: contents;
+      }
+      main.page {
         display: grid;
-        grid-template-columns:
-        [start] repeat(var(--page-grid-columns), 1fr) [end];
-        padding: 0 calc(0.5 * var(--page-grid-gap));
-        gap: var(--page-grid-gap);
-        align-items: baseline;
-        }
-        
-    .reviews{
-        font-size: var(--font-size-medium);
-    }
-    /* .page > main {
-        display: grid;
-        grid-template-columns: subgrid;
-        grid-column: start / span 4;
-    }
-         */
-        
-    .page > header {
-    grid-column: start / end;
-    }
-    .page > main {
-    grid-column: span 5;
-    }
-
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    table th, table td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid #ddd; /* Add borders between rows */
-    }
-
-    table th {
-        background-color: #f2f2f2; /* Light gray background for header row */
-    }
-
-    table tr:nth-child(even) {
-        background-color: #f2f2f2; /* Alternate row background color */
-    }
-
-    table tr:hover {
-        background-color: #ddd; /* Highlight row on hover */
-    }
-
-    .entry {
-        width: 50%;
-        margin: 0 auto;
-        padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        background-color: #f9f9f9;
-    }
-    
-    .entry h1 {
+        grid-template-columns: 1fr;
+        padding: var(--size-spacing-small) var(--size-spacing-medium);
+        gap: var(--size-spacing-medium);
+        background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      header {
         text-align: center;
+        font-size: 28px;
+        font-weight: bold;
         margin-bottom: 20px;
-    }
-    
-    .entry form {
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .entry label {
+        color: #343a40;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      }
+      .movie-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: var(--size-spacing-large);
+      }
+      .movie {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: var(--size-spacing-medium);
+        text-align: center;
+        background-color: #ffffff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .movie:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      }
+      .movie-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
         margin-bottom: 10px;
-    }
-    
-    .entry input[type="text"],
-    .entry textarea {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 10px;
-        border: 1px solid #ccc;
-        border-radius: 3px;
-    }
-    
-    .entry input[type="submit"] {
-        width: auto;
-        padding: 8px 20px;
-        margin-top: 10px;
-        border: none;
-        border-radius: 3px;
+        transition: transform 0.3s ease;
+      }
+      .movie-image:hover {
+        transform: scale(1.05);
+      }
+      h2 {
+        font-size: 22px;
+        color: #343a40;
+        margin: 10px 0;
+      }
+      .rating {
+        font-size: 18px;
+        color: #ffc107;
+        margin: 10px 0;
+      }
+      .review-link {
+        display: inline-block;
+        padding: 10px 20px;
         background-color: #007bff;
-        color: #fff;
-        cursor: pointer;
-    }
-    
-    .entry input[type="submit"]:hover {
+        color: #ffffff;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+      }
+      .review-link:hover {
         background-color: #0056b3;
-    }
-    
-  
-
-
-  `;
+        transform: scale(1.05);
+      }
+    `
+  ];
 }
 
 define({ 'home-view': HomeViewElement });

@@ -1,5 +1,5 @@
 // server/models/movie.ts
-import { Review } from './Review';
+import { Review } from './review';
 import { Document } from 'mongoose';
 
 export interface Movie {
