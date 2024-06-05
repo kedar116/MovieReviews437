@@ -72,14 +72,30 @@ router.get("/:movieName", (req, res) => __async(void 0, null, function* () {
   }
 }));
 router.post("/", (req, res) => __async(void 0, null, function* () {
+  console.log("Received request to add review:", req.body);
   try {
     const review = yield import_review_svc.default.addReview(req.body);
-    const update = {
-      $push: { reviews: review._id },
-      $inc: { reviewCount: 1 }
-    };
-    yield import_movie_svc.default.updateMovie(req.body.movieName, update);
-    res.status(201).json(review);
+    const movie = yield import_movie_svc.default.getMovieByName(req.body.movieName);
+    if (movie) {
+      const update = {
+        $push: { reviews: review._id },
+        $inc: { reviewCount: 1 },
+        $set: { rating: (movie.rating * movie.reviewCount + review.rating) / (movie.reviewCount + 1) }
+        // Update the average rating
+      };
+      yield import_movie_svc.default.updateMovie(req.body.movieName, update);
+    } else {
+      const newMovie = {
+        name: req.body.movieName,
+        img: req.body.img || "",
+        // Handle the image separately if needed
+        rating: req.body.rating,
+        reviews: [review._id],
+        reviewCount: 1
+      };
+      yield import_movie_svc.default.createMovie(newMovie);
+      res.status(201).json({ review, movie: newMovie });
+    }
   } catch (err) {
     res.status(400).json({ message: err.message });
   }

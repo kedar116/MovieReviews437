@@ -45,7 +45,7 @@ module.exports = __toCommonJS(movie_svc_exports);
 var import_mongoose = require("mongoose");
 const movieSchema = new import_mongoose.Schema({
   name: { type: String, required: true },
-  img: { type: String, required: true },
+  img: { type: String, required: false },
   rating: { type: Number, required: true },
   reviews: [{ type: import_mongoose.Schema.Types.ObjectId, ref: "Review" }],
   reviewCount: { type: Number, default: 0 }

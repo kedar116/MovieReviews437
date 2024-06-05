@@ -62,12 +62,37 @@ router.get("/", (req, res) => __async(void 0, null, function* () {
     res.status(500).json({ message: err.message });
   }
 }));
+router.get("/:name", (req, res) => __async(void 0, null, function* () {
+  try {
+    const movie = yield import_movie_svc.default.getMovieByName(req.params.name);
+    if (movie) {
+      res.json(movie);
+    } else {
+      res.status(404).json({ message: "Movie not found" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}));
 router.post("/", (req, res) => __async(void 0, null, function* () {
+  console.log("Received request to create movie:", req.body);
   try {
     const movie = yield import_movie_svc.default.createMovie(req.body);
     res.status(201).json(movie);
   } catch (err) {
     res.status(400).json({ message: err.message });
+  }
+}));
+router.put("/:name", (req, res) => __async(void 0, null, function* () {
+  try {
+    const movie = yield import_movie_svc.default.updateMovie(req.params.name, req.body);
+    if (movie) {
+      res.json(movie);
+    } else {
+      res.status(404).json({ message: "Movie not found" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 }));
 var movies_default = router;

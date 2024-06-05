@@ -6,7 +6,7 @@ import { UpdateQuery } from 'mongoose';
 
 const movieSchema = new Schema<MovieDocument>({
   name: { type: String, required: true },
-  img: { type: String, required: true },
+  img: { type: String, required: false },
   rating: { type: Number, required: true },
   reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
   reviewCount: { type: Number, default: 0 }

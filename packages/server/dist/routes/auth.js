@@ -73,6 +73,7 @@ function generateAccessToken(username) {
   });
 }
 function authenticateUser(req, res, next) {
+  console.log("came here to try ");
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
   if (!token) {

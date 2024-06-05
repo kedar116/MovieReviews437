@@ -1,58 +1,45 @@
 import { LitElement, html, css } from 'lit';
-import { define, View } from '@calpoly/mustang';
+import { define, Form, History, View } from '@calpoly/mustang';
 import { property, state } from 'lit/decorators.js';
 import { Msg } from "../messages";
 import { Model } from "../model";
 import { Review } from 'server/models';
+import resetCSS from "../css/reset";
 
 export class AddReviewViewElement extends View<Model, Msg> {
-  @property({ type: String }) movieName = '';
-  @state() user = ''; // To be updated with the profile username
-  @property({ type: String }) review = '';
-  @property({ type: Number }) rating = 0;
-  @property({ type: Number }) year = new Date().getFullYear();
-  @property({ type: String }) director = '';
 
-  connectedCallback() {
-    super.connectedCallback();
-    this.user = this.model.profile?.id || 'anonymous';
-    console.log(this.user);
-  } 
- 
-
-  async handleSubmit(e: Event) {
-    e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
-    const data = Object.fromEntries(formData.entries()) as unknown as Review;
-    data.user = this.user;  // Ensure user is set
-    console.log(data.user);
-    console.log(data);
-
-    this.dispatchMessage([
-      "reviews/add",
-      {
-        review: data,
-        onSuccess: () => {
-          this.dispatchEvent(new CustomEvent('review-added', { bubbles: true, composed: true }));
-          // Redirect to home view
-          this.navigate('/app');
-        },
-        onFailure: (err: Error) => {
-          console.error('Failed to add review:', err);
-        }
-      }
-    ]);
+  @state()
+  get reviews(): Review[] {
+    return this.model.reviews || [];
   }
 
-  navigate(href: string) {
-    const event = new CustomEvent('navigate', { detail: { href } });
-    window.dispatchEvent(event);
+  static uses=define({
+    "mu-form": Form.Element,
+  })
+
+
+  constructor() {
+    super("blazing:model");
+    // this.fetchMovies();
+    
   }
+
 
 
   render() {
-    return html`
-      <form class="entry" @submit="${this.handleSubmit}">
+    // const{
+    //   movieName,review,rating,year,director
+    // } = this.review || ({} as Review);
+    console.log("Review",this.reviews);
+    console.log(this.reviews)
+
+    const renderDisplayOrForm = () =>{
+
+      return html`
+        <mu-form
+        .init=${this.reviews}
+        @mu-form:submit=${this._handleSubmit}>
+        
         <label for="movieName">Movie Name:</label>
         <input type="text" id="movieName" name="movieName" required>
         <label for="review">Review:</label>
@@ -60,61 +47,115 @@ export class AddReviewViewElement extends View<Model, Msg> {
         <label for="rating">Rating:</label>
         <input type="number" id="rating" name="rating" min="0" max="10" required>
         <label for="year">Year:</label>
-        <input type="number" id="year" name="year" value="${this.year}">
+        <input type="number" id="year" name="year">
         <label for="director">Director:</label>
         <input type="text" id="director" name="director">
-        <button type="submit">Submit</button>
-      </form>
+       
+        </mu-form>
+  
     `;
+    }
+    console.log("Review",this.reviews);
+    console.log(this.reviews)
+
+    return html`
+    <main class="page">
+      ${renderDisplayOrForm()}
+    </main>
+  `
+  ;
+
+    
   }
 
-  static styles = css`
-    .entry {
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      background-color: #f9f9f9;
-    }
+  static styles = [
+    resetCSS,
+    css`
+      :host {
+        display: contents;
+      }
+      main.page {
+        display: flex;
+        justify-content: center;
+        padding: var(--size-spacing-medium);
+      }
+      mu-form {
+        background-color: #fff;
+        padding: var(--size-spacing-large);
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        width: 100%;
+      }
+      .form-group {
+        margin-bottom: var(--size-spacing-medium);
+      }
+      label {
+        display: block;
+        margin-bottom: var(--size-spacing-small);
+        font-weight: bold;
+        color: #333;
+      }
+      input[type="text"],
+      input[type="number"],
+      textarea {
+        width: 100%;
+        padding: var(--size-spacing-small);
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+      textarea {
+        resize: vertical;
+      }
+      button[type="submit"] {
+        width: 100%;
+        padding: var(--size-spacing-small);
+        border: none;
+        border-radius: 4px;
+        background-color: #007bff;
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      button[type="submit"]:hover {
+        background-color: #0056b3;
+      }
+      button[type="submit"]:active {
+        background-color: #004494;
+      }
+    `
+  ];
 
-    .entry h1 {
-      text-align: center;
-      margin-bottom: 20px;
+  _handleSubmit(event: Form.SubmitEvent<Review>) {
+    console.log("Submitting form", event);
+    if (this.reviews) {
+      console.log("entered if statement");
+      let r = event.detail as Review;
+      console.log("My review is ",r);
+      const review=[];
+      review.push(r);
+      this.dispatchMessage([
+        "reviews/add",
+        {
+          review,
+          onSuccess: () => {
+            History.dispatch(this, "history/navigate", {
+              href: `/app`
+            });
+          },
+          onFailure: (err) => {
+            console.log("Error saving review", err);
+          }
+        }
+      ]);
     }
-
-    .entry form {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .entry label {
-      margin-bottom: 10px;
-    }
-
-    .entry input[type="text"],
-    .entry input[type="number"],
-    .entry textarea {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 3px;
-    }
-
-    .entry button[type="submit"] {
-      width: auto;
-      padding: 8px 20px;
-      margin-top: 10px;
-      border: none;
-      border-radius: 3px;
-      background-color: #007bff;
-      color: #fff;
-      cursor: pointer;
-    }
-
-    .entry button[type="submit"]:hover {
-      background-color: #0056b3;
-    }
-  `;
+  }
 }
+
+
+    
 
 define({ 'add-review-view': AddReviewViewElement });

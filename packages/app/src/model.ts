@@ -9,7 +9,7 @@ export interface Model {
 
   profile?: Profile;
   movies?: Movie[];
-  reviews?: Review[];
+  reviews?: Review;
 }
 
 export const init: Model = { };
