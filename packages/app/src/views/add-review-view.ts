@@ -41,14 +41,19 @@ export class AddReviewViewElement extends View<Model, Msg> {
         @mu-form:submit=${this._handleSubmit}>
         
         <label for="movieName">Movie Name:</label>
+        <br>
         <input type="text" id="movieName" name="movieName" required>
         <label for="review">Review:</label>
+        <br>
         <textarea id="review" name="review" required></textarea>
         <label for="rating">Rating:</label>
+        <br>
         <input type="number" id="rating" name="rating" min="0" max="10" required>
         <label for="year">Year:</label>
+        <br>
         <input type="number" id="year" name="year">
         <label for="director">Director:</label>
+        <br>
         <input type="text" id="director" name="director">
        
         </mu-form>
@@ -77,57 +82,69 @@ export class AddReviewViewElement extends View<Model, Msg> {
       main.page {
         display: flex;
         justify-content: center;
-        padding: var(--size-spacing-medium);
+        padding: var(--size-spacing-large);
+        background: linear-gradient(to right, #f8f9fa, #e9ecef);
+        min-height: 75vh;
       }
       mu-form {
-        background-color: #fff;
-        padding: var(--size-spacing-large);
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        max-width: 600px;
+        background-color: lightgrey;
+        padding: var(--size-spacing-small);
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        max-width: 1000px;
         width: 100%;
+        display: grid;
+        gap: var(--size-spacing-medium);
       }
       .form-group {
-        margin-bottom: var(--size-spacing-medium);
+        margin-bottom: var(--size-spacing-small);
       }
       label {
         display: block;
         margin-bottom: var(--size-spacing-small);
         font-weight: bold;
         color: #333;
+        font-size: 18px;
       }
       input[type="text"],
       input[type="number"],
       textarea {
         width: 100%;
-        padding: var(--size-spacing-small);
+        padding: var(--size-spacing-medium);
         border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 16px;
+        border-radius: 8px;
+        font-size: 18px;
+        background-color: #f8f9fa;
       }
       textarea {
-        resize: vertical;
+        resize: horizontal;
+        min-height: 150px;
       }
-      button[type="submit"] {
-        width: 100%;
-        padding: var(--size-spacing-small);
+      .button-container {
+        display: flex;
+        justify-content: space-between;
+      }
+      .fancy-button {
+        padding: 10px 20px;
         border: none;
-        border-radius: 4px;
+        border-radius: 8px;
         background-color: #007bff;
         color: #fff;
-        font-size: 16px;
+        font-size: 18px;
         font-weight: bold;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        transition: background-color 0.3s ease, transform 0.3s ease;
       }
-      button[type="submit"]:hover {
+      .fancy-button:hover {
         background-color: #0056b3;
+        transform: scale(1.05);
       }
-      button[type="submit"]:active {
+      .fancy-button:active {
         background-color: #004494;
       }
     `
   ];
+
 
   _handleSubmit(event: Form.SubmitEvent<Review>) {
     console.log("Submitting form", event);

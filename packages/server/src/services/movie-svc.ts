@@ -18,8 +18,9 @@ async function getAllMovies(): Promise<MovieDocument[]> {
   return MovieModel.find().populate('reviews').exec();
 }
 
-async function getMovieByName(name: string): Promise<MovieDocument | null> {
-  return MovieModel.findOne({ name }).populate('reviews').exec();
+async function getMovieByName(moviename: string): Promise<MovieDocument | null> {
+  console.log(`Querying database for movie with name: ${moviename}`);
+  return MovieModel.findOne({ name:moviename }).populate('reviews').exec();
 }
 
 async function createMovie(movie: MovieDocument): Promise<MovieDocument> {

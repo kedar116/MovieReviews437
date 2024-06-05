@@ -65,8 +65,13 @@ router.get("/", (req, res) => __async(void 0, null, function* () {
 }));
 router.get("/:movieName", (req, res) => __async(void 0, null, function* () {
   try {
-    const reviews = yield import_review_svc.default.getReviewsByMovie(req.params.movieName);
-    res.json(reviews);
+    const { movieName } = req.params;
+    const reviews = yield import_review_svc.default.getReviewsByMovie(movieName);
+    if (reviews) {
+      res.json(reviews);
+    } else {
+      res.status(404).json({ message: "Reviews not found" });
+    }
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -83,7 +88,8 @@ router.post("/", (req, res) => __async(void 0, null, function* () {
         $set: { rating: (movie.rating * movie.reviewCount + review.rating) / (movie.reviewCount + 1) }
         // Update the average rating
       };
-      yield import_movie_svc.default.updateMovie(req.body.movieName, update);
+      const updatedMovie = yield import_movie_svc.default.updateMovie(req.body.movieName, update);
+      res.status(201).json(updatedMovie);
     } else {
       const newMovie = {
         name: req.body.movieName,
@@ -93,8 +99,8 @@ router.post("/", (req, res) => __async(void 0, null, function* () {
         reviews: [review._id],
         reviewCount: 1
       };
-      yield import_movie_svc.default.createMovie(newMovie);
-      res.status(201).json({ review, movie: newMovie });
+      const createdMovie = yield import_movie_svc.default.createMovie(newMovie);
+      res.status(201).json(createdMovie);
     }
   } catch (err) {
     res.status(400).json({ message: err.message });

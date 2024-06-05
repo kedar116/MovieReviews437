@@ -6,8 +6,8 @@ var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
+  for (var name2 in all)
+    __defProp(target, name2, { get: all[name2], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
@@ -62,12 +62,16 @@ router.get("/", (req, res) => __async(void 0, null, function* () {
     res.status(500).json({ message: err.message });
   }
 }));
-router.get("/:name", (req, res) => __async(void 0, null, function* () {
+router.get("/:moviename", (req, res) => __async(void 0, null, function* () {
   try {
-    const movie = yield import_movie_svc.default.getMovieByName(req.params.name);
+    const { moviename } = req.params;
+    console.log(`Fetching movie with name: ${moviename}`);
+    const movie = yield import_movie_svc.default.getMovieByName(moviename);
     if (movie) {
+      console.log(`Movie found: ${JSON.stringify(movie)}`);
       res.json(movie);
     } else {
+      console.log(`Movie not found: ${name}`);
       res.status(404).json({ message: "Movie not found" });
     }
   } catch (err) {
@@ -85,7 +89,8 @@ router.post("/", (req, res) => __async(void 0, null, function* () {
 }));
 router.put("/:name", (req, res) => __async(void 0, null, function* () {
   try {
-    const movie = yield import_movie_svc.default.updateMovie(req.params.name, req.body);
+    const { name: name2 } = req.params;
+    const movie = yield import_movie_svc.default.updateMovie(name2, req.body);
     if (movie) {
       res.json(movie);
     } else {

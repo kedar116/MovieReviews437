@@ -56,9 +56,10 @@ function getAllMovies() {
     return MovieModel.find().populate("reviews").exec();
   });
 }
-function getMovieByName(name) {
+function getMovieByName(moviename) {
   return __async(this, null, function* () {
-    return MovieModel.findOne({ name }).populate("reviews").exec();
+    console.log(`Querying database for movie with name: ${moviename}`);
+    return MovieModel.findOne({ name: moviename }).populate("reviews").exec();
   });
 }
 function createMovie(movie) {

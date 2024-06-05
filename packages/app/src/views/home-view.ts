@@ -8,35 +8,20 @@ import { Movie } from 'server/models';
 import resetCSS from "../css/reset";
 
 export class HomeViewElement extends View<Model, Msg> {
+
   @state()
   get movies(): Movie[] {
     return this.model.movies || [];
   }
 
-
+  
 
   constructor() {
     super("blazing:model");
     // this.fetchMovies();
     
   }
-
-//   async fetchMovies() {
-//     try {
-//         const response = await fetch('/api/movies',, {
-//             method: 'GET', // or 'POST', 'PUT', etc.
-//             headers: Auth.headers(Auth.AuthenticatedUser),
-//           });
-//         console.log("ERROR : ",response)
-//         this.movies = await response.json();
-        
-//     } catch (error) {
-//         console.log("I TRIED")
-//         console.log()
-//     }
-
-    
-//   }
+  
 
 connectedCallback() {
     super.connectedCallback();
@@ -48,17 +33,20 @@ connectedCallback() {
   }
 
   render(): TemplateResult {
+    const colors = ['#f28b82', '#fbbc04', '#fff475', '#ccff90', '#a7ffeb', '#cbf0f8', '#aecbfa', '#d7aefb', '#fdcfe8'];
     const renderItem = (movie: Movie) => {
-      const { name, img, rating, reviews } = movie;
-      console.log("This is it",movie,name,img,rating,reviews);
+      const { name, img, rating, reviews, reviewCount } = movie;
+      const roundedRating = rating.toFixed(2); // Round the rating to 2 decimal places
+      const randomColor=colors[Math.floor(Math.random() * colors.length)];
+      console.log("This is it", movie, name, img, rating, reviews);
 
       return html`
-        <div class="movie">
+        <div class="movie" style="background-color: ${randomColor};">
           <h2>${name}</h2>
           <img src="${img}" alt="${name}" class="movie-image" />
-          <p>Rating: ${rating}/10</p>
-          
-          <a href="/app/reviews/${name}">Go to Reviews</a>
+          <p>Rating: ${roundedRating}/10</p> <!-- Display the rounded rating -->
+          <p>Reviews: ${reviewCount}</p>
+          <a href="/app/display/${name}">Go to Reviews</a>
         </div>
       `;
     };
@@ -76,7 +64,7 @@ connectedCallback() {
     `;
   }
 
-  static styles = [
+ static styles = [
     resetCSS,
     css`
       :host {
@@ -93,7 +81,7 @@ connectedCallback() {
       }
       header {
         text-align: center;
-        font-size: 28px;
+        font-size: 32px; /* Increased font size */
         font-weight: bold;
         margin-bottom: 20px;
         color: #343a40;
@@ -101,17 +89,18 @@ connectedCallback() {
       }
       .movie-list {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Increased min width of cards */
         gap: var(--size-spacing-large);
       }
       .movie {
         border: 1px solid #ddd;
         border-radius: 10px;
-        padding: var(--size-spacing-medium);
+        padding: var(--size-spacing-large); /* Increased padding */
         text-align: center;
         background-color: #ffffff;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+        font-size: 18px; /* Increased font size */
       }
       .movie:hover {
         transform: translateY(-10px);
@@ -121,31 +110,37 @@ connectedCallback() {
         max-width: 100%;
         height: auto;
         border-radius: 10px;
-        margin-bottom: 10px;
+        margin-bottom: 15px; /* Increased margin */
         transition: transform 0.3s ease;
       }
       .movie-image:hover {
         transform: scale(1.05);
       }
       h2 {
-        font-size: 22px;
+        font-size: 26px; /* Increased font size */
         color: #343a40;
-        margin: 10px 0;
+        margin: 15px 0; /* Increased margin */
       }
       .rating {
-        font-size: 18px;
+        font-size: 22px; /* Increased font size */
         color: #ffc107;
+        margin: 10px 0;
+      }
+      .review-count {
+        font-size: 20px; /* Increased font size */
+        color: #777;
         margin: 10px 0;
       }
       .review-link {
         display: inline-block;
-        padding: 10px 20px;
+        padding: 12px 25px; /* Increased padding */
         background-color: #007bff;
         color: #ffffff;
         border-radius: 5px;
         text-decoration: none;
         font-weight: bold;
         transition: background-color 0.3s ease, transform 0.3s ease;
+        font-size: 18px; /* Increased font size */
       }
       .review-link:hover {
         background-color: #0056b3;

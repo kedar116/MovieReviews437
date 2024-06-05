@@ -13,12 +13,16 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:name', async (req, res) => {
+router.get('/:moviename', async (req, res) => {
   try {
-    const movie = await movieService.getMovieByName(req.params.name);
+    const {moviename}=req.params;
+    console.log(`Fetching movie with name: ${moviename}`);
+    const movie = await movieService.getMovieByName(moviename);
     if (movie) {
+      console.log(`Movie found: ${JSON.stringify(movie)}`);
       res.json(movie);
     } else {
+      console.log(`Movie not found: ${name}`);
       res.status(404).json({ message: "Movie not found" });
     }
   } catch (err) {
@@ -38,7 +42,8 @@ router.post('/', async (req, res) => {
 
 router.put('/:name', async (req, res) => {
   try {
-    const movie = await movieService.updateMovie(req.params.name, req.body);
+    const {name} = req.params;
+    const movie = await movieService.updateMovie(name, req.body);
     if (movie) {
       res.json(movie);
     } else {

@@ -8,11 +8,11 @@ import update from "./update";
 import { ProfileViewElement } from "./views/profile-view";
 import { AboutViewElement } from "./views/about-view";
 import { HomeViewElement } from "./views/home-view";
-import {MovieReviewsViewElement} from "./views/movie-reviews-view";
+import {DisplayViewElement} from "./views/display-view";
 import {AddMovieViewElement} from "./views/add-movie-view"
 import { BlazingHeaderElement } from "./components/blazing-header";
 import {AddReviewViewElement} from "./views/add-review-view";
-
+import { RankingsViewElement } from "./views/rankings-view";
 
 const routes = [
   
@@ -31,18 +31,24 @@ const routes = [
     `
   },
   {
-    path: "app/add-movie",
+    path: "/app/add-movie",
     view: () => html`<add-movie-view></add-movie-view>`
   },
   
   {
-    path: "app/movie-reviews/:movieName",
-    view: (params:Switch.Params) => html`<movie-reviews-view movieName=${params.movieName}></movie-reviews-view>`
+    path: "/app/display/:movieName",
+    view: (params:Switch.Params) => html`<display-view movieName=${params.movieName}></display-view>`
   },
   {
     path: "/app/add-review",
     view: () => html`
       <add-review-view></add-review-view>
+    `
+  },
+  {
+    path: "/app/rankings",
+    view: () => html`
+      <rankings-view></rankings-view>
     `
   },
   {
@@ -72,15 +78,16 @@ define({
 
   "mu-switch": class AppSwitch extends Switch.Element {
     constructor() {
-      super(routes, "blazing:history");
+      super(routes, "blazing:history","blazing:auth");
     }
   },
   "blazing-header": BlazingHeaderElement,
   "profile-view": ProfileViewElement,
   "about-view": AboutViewElement,
   "home-view": HomeViewElement,
-  "movie-reviews-view": MovieReviewsViewElement,
+  "display-view": DisplayViewElement,
   "add-review-view": AddReviewViewElement,
-  "add-movie-view": AddMovieViewElement
+  "add-movie-view": AddMovieViewElement,
+  "rankings-view": RankingsViewElement,
   
 });

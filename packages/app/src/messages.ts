@@ -26,7 +26,7 @@ export type Msg =
       }
     ]
   | [
-      "reviews/fetch",
+      "reviews/fetch", 
       {
         movieName: string;
         onSuccess?: (reviews: Review[]) => void;

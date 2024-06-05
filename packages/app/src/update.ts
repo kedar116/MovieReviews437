@@ -33,15 +33,7 @@ export default function update(
       break;
 
     case "movies/fetch":
-      // fetchMovies()
-      //   .then((movies) => {
-      //     apply((model) => ({ ...model, movies }));
-      //     message[1].onSuccess?.();
-      //   })
-      //   .catch((error: Error) => {
-      //     message[1].onFailure?.(error);
-      //   });
-      // break;
+    
       fetchMovies(user).then((movies: Movie[] | undefined) =>
         {
           console.log("i get this : ",movies)
@@ -62,98 +54,28 @@ export default function update(
         });
       break;
 
-    // case "reviews/fetch":
-    //   fetchReviews(message[1].movieName)
-    //     .then((reviews) => {
-    //       apply((model) => ({ ...model, reviews }));
-    //       message[1].onSuccess?.(reviews);
-    //     })
-    //     .catch((error: Error) => {
-    //       message[1].onFailure?.(error);
-    //     });
-    //   break;
-
-    // case "reviews/add":
-    //   console.log("reached here")
-    //   addReview(message[1],user)
-    //     .then((review) => {
-    //       console.log("TRYING: ",review)
-          
-    //       apply((model) => ({ ...model, reviews: [...(model.reviews || []), review] 
-    //       }));
-    //       message[1].onSuccess?.(review);
-    //       console.log("review is ",review);
-    //       console.log("model is ",model);
-    //       return model;
-    //     })
-    //     .catch((error: Error) => {
-    //       message[1].onFailure?.(error);
-    //     });
-    //   break;
+    case "reviews/fetch":
+      fetchReviews(message[1],user)
+        .then((reviews) => {
+          apply((model) => ({ ...model, reviews }));
+          message[1].onSuccess?.(reviews);
+        })
+        .catch((error: Error) => {
+          message[1].onFailure?.(error);
+        });
+      break;
 
     case "reviews/add":
     addReview(message[1], user)
     .then((review) => {
-      // Update model with the new review
       apply((model) => ({ ...model, reviews: [...(model.reviews || []), review] }));
       message[1].onSuccess?.(review);
 
-      const movieName = review.movieName;
-      if (!movieName) {
-        console.error("Movie name is undefined");
-        throw new Error("Movie name is undefined");
-      }
-
-      console.log("Fetching movie by name:", movieName);
-
-      // Fetch the movie by name to check if it exists
-      fetchMovieByName({ movieName }, user)
-        .then((movie) => {
-          if (movie) {
-            // Movie exists, update it
-            const update: UpdateQuery<Movie> = {
-              $push: { reviews: review._id },
-              $inc: { reviewCount: 1 }
-            };
-            updateMovie({ movieName, update }, user)
-              .then((updatedMovie) => {
-                apply((model) => ({
-                  ...model,
-                  movies: (model.movies || []).map(m => m.name === updatedMovie.name ? updatedMovie : m)
-                }));
-              });
-          } else {
-
-            console.log("I reached the else block, so I'm creating a new movie");
-            // Movie doesn't exist, create a new one
-            const newMovie = {
-              name: review.movieName,
-              img: "sample_image",  // Assuming you have a way to get the image URL
-              rating: review.rating,
-              reviews: [review._id],
-              reviewCount: 1
-            };
-            console.log(review.movieName);
-            console.log("My new movie entry is",newMovie);
-            addMovie({ movie: newMovie }, user)
-              .then((createdMovie) => {
-                apply((model) => ({ ...model, movies: [...(model.movies || []), createdMovie] }));
-              });
-          }
-        })
-        .catch((error: Error) => {
-          console.error("Failed to fetch or update movie:", error);
-        });
     })
     .catch((error: Error) => {
       message[1].onFailure?.(error);
     });
   break;
-
-    
-        // default:
-        //   const unhandled: never = message[0];
-        //   throw new Error(`Unhandled Auth message "${unhandled}"`);
 
       }
     }
@@ -234,54 +156,6 @@ function fetchMovies(user: Auth.User) {
     });
 }
 
-function fetchMovieByName(
-  
-  msg: {movieName: string}, 
-  user: Auth.User) 
-  
-  {
-  return fetch(`/api/movies/${msg.movieName}`, {
-    headers: Auth.headers(user)
-  })
-  .then((response: Response) => {
-    if (response.status === 404) {
-      return null;
-    }
-    if (response.status !== 200)
-      throw `Failed to load movie with name ${msg.movieName}`;
-    return response.json();
-  })
-  .then((json: unknown) => {
-    if (json) {
-      console.log("Movie:", json);
-      return json as Movie;
-    }
-  });
-}
-
-function updateMovie(
-  msg: {movieName: string, update: UpdateQuery<Movie>},
-  user: Auth.User
-){
-  return fetch(`/api/movies/${msg.movieName}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" ,
-    ...Auth.headers(user)
-  },
-    body: JSON.stringify(update)
-  })
-  .then((response: Response) => {
-    if (response.status !== 200)
-      throw `Failed to update movie with name ${msg.movieName}`;
-    return response.json();
-  })
-  .then((json: unknown) => {
-    if (json) {
-      console.log("Updated Movie:", json);
-      return json as Movie;
-    }
-  });
-}
 
 
 function addMovie(
@@ -324,13 +198,30 @@ function addMovie(
 }
 
 
-function fetchReviews(movieName: string,user: Auth.User): Promise<Review[]> {
-  return fetch(`/api/reviews/${movieName}`,{headers: Auth.headers(user)})
-    .then((response) => response.json())
-    .catch((err) => {
-      console.error("Error fetching reviews:", err);
-      return [];
-    });
+function fetchReviews(
+  msg: {movieName: string},
+  user: Auth.User
+
+){
+ 
+  console.log(msg);
+  console.log("Fetching reviews for movie",msg.movieName);
+  return fetch(`/api/reviews/${msg.movieName}`,
+  {headers: Auth.headers(user)
+
+  })
+  .then((response: Response) => {
+    if (response.status !== 200)
+      throw `Failed to load reviews`;
+    return response.json();
+  })
+  .then((json: unknown) => {
+    if (json) {
+      console.log("Reviews",json);
+      
+      return json as Review;
+    }
+  });
 }
 
 function addReview(

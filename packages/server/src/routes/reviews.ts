@@ -24,8 +24,13 @@ router.get("/", async (req, res) => {
 
 router.get('/:movieName', async (req, res) => {
   try {
-    const reviews = await reviewService.getReviewsByMovie(req.params.movieName);
-    res.json(reviews);
+    const {movieName}=req.params;
+    const reviews = await reviewService.getReviewsByMovie(movieName);
+    if(reviews){
+      res.json(reviews);}
+    else{
+      res.status(404).json({ message: "Reviews not found" });
+    }
   } catch (err) {
     res.status(500).json({ message: (err as Error).message });
   }
@@ -46,7 +51,8 @@ router.post('/', async (req, res) => {
         $inc: { reviewCount: 1 },
         $set: { rating: (movie.rating * movie.reviewCount + review.rating) / (movie.reviewCount + 1) } // Update the average rating
       };
-     await movieService.updateMovie(req.body.movieName, update);
+     const updatedMovie= await movieService.updateMovie(req.body.movieName, update);
+     res.status(201).json(updatedMovie);
 
     } else {
       // Movie does not exist, create a new movie document
@@ -57,8 +63,8 @@ router.post('/', async (req, res) => {
         reviews: [review._id],
         reviewCount: 1
       };
-    await movieService.createMovie(newMovie as MovieDocument);
-      res.status(201).json({ review, movie: newMovie });
+    const createdMovie= await movieService.createMovie(newMovie as MovieDocument);
+      res.status(201).json(createdMovie);
     }
   } catch (err) {
     res.status(400).json({ message: (err as Error).message });
