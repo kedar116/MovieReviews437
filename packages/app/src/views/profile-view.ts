@@ -41,9 +41,10 @@ class ProfileViewer extends LitElement {
         </nav>
         <dl>
           <dt>Username</dt>
-          <dd><slot name="id"></slot></dd>
+          <dd><slot name="userid"></slot></dd>
           <dt>Nickname</dt>
           <dd><slot name="nickname"></slot></dd>
+          <dt>Home City</dt>
         </dl>
       </section>
     `;
@@ -115,7 +116,7 @@ class ProfileEditor extends LitElement {
         <mu-form .init=${this.init}>
           <label>
             <span>Username</span>
-            <input disabled name="id" />
+            <input disabled name="userid" />
           </label>
           <label>
             <span>Avatar</span>
@@ -193,7 +194,7 @@ export class ProfileViewElement extends View<Model, Msg> {
   @property({ type: Boolean, reflect: true })
   edit = false;
 
-  @property({ attribute: "user-id", reflect: true })
+  @property({ attribute: "id", reflect: true })
   id = "";
 
   @state()
@@ -241,14 +242,14 @@ export class ProfileViewElement extends View<Model, Msg> {
       avatar,
       name,
       id,
-      nickname
+      nickname,
+     
     } = this.profile || {};
     const initial = (name || nickname || id || "?").slice(
       0,
       1
     );
-   
-
+  
     const fields = html`
       <profile-avatar
         slot="avatar"
@@ -272,7 +273,7 @@ export class ProfileViewElement extends View<Model, Msg> {
           <profile-viewer username=${id}>
             ${fields}
             <span slot="name">${name}</span>
-            <span slot="id">${id}</span>
+            <span slot="userid">${id}</span>
             <span slot="nickname">${nickname}</span>
           </profile-viewer>
         `;

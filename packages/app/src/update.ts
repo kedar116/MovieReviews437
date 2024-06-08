@@ -95,10 +95,13 @@ function saveProfile(
     },
     body: JSON.stringify(msg.profile)
   })
-    .then((response: Response) => {
-      if (response.status === 200) return response.json();
-      return undefined;
-    })
+  .then((response: Response) => {
+    if (response.status === 200) return response.json();
+    else
+      throw new Error(
+        `Failed to save profile for ${msg.id}`
+      );
+  })
     .then((json: unknown) => {
       if (json) return json as Profile;
       return undefined;

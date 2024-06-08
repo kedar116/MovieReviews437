@@ -1,6 +1,6 @@
 import { LitElement, html, css, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { Auth, define } from '@calpoly/mustang';
+import { Auth, define, Events, Observer } from '@calpoly/mustang';
 import { View } from "@calpoly/mustang";
 import { Msg } from "../messages";
 import { Model } from "../model";
@@ -14,25 +14,48 @@ export class HomeViewElement extends View<Model, Msg> {
     return this.model.movies || [];
   }
 
-  
+  @property()
+  username = "anonymous";
+
+  @state()
+  authenticated = false;
 
   constructor() {
     super("blazing:model");
+    this._authObserver = new Observer<Auth.Model>(this, "blazing:auth");
     // this.fetchMovies();
     
   }
   
 
-connectedCallback() {
+  connectedCallback() {
     super.connectedCallback();
-    console.log("Fetching movies...");
-    this.dispatchMessage(["movies/fetch"]);
-    
-    console.log("Hi");  
-    
+    this._authObserver.observe(({ user }) => {
+      if (user && user.username !== this.username) {
+        this.username = user.username;
+        this.authenticated = true;
+        console.log("Fetching movies...");
+        this.dispatchMessage(["movies/fetch"]);
+      } else if (!user) {
+        this.authenticated = false;
+        this.username = "anonymous";
+      }
+    });
   }
 
   render(): TemplateResult {
+
+    if (!this.authenticated) {
+      return html`
+        <main class="page">
+          <div class="login-message">
+            <h1>You must log in to view this content.</h1>
+            <a href="login.html" class="signin" @click=${signInUser}>Sign in</a>
+          </div>
+        </main>
+      `;
+    }
+
     const colors = ['#f28b82', '#fbbc04', '#fff475', '#ccff90', '#a7ffeb', '#cbf0f8', '#aecbfa', '#d7aefb', '#fdcfe8'];
     const renderItem = (movie: Movie) => {
       const { name, img, rating, reviews, reviewCount } = movie;
@@ -148,6 +171,10 @@ connectedCallback() {
       }
     `
   ];
+  _authObserver: Observer<Auth.Model>;
+}
+function signInUser(ev: Event) {
+  Events.relay(ev, "auth:message", ["auth/login"]);
 }
 
 define({ 'home-view': HomeViewElement });

@@ -42,6 +42,8 @@ export class BlazingHeaderElement extends View<Model, Msg> {
     });
   }
 
+  
+
   render() {
     const { avatar, name, nickname, id, color } =
       this.profile || {};
@@ -54,8 +56,8 @@ export class BlazingHeaderElement extends View<Model, Msg> {
     return html`
       <header>
         <div class="logo-container">
-          <img src="logo.png" alt="Movie Reviews App Logo" class="logo">
-          <span class="app-name">Movie Reviews App</span>
+          <img src="logo.png" alt="The Movie Finder  Logo" class="logo">
+          <span class="app-name">The Cinema Critic</span>
         </div>
         <nav class="navigation">
         <ul>
@@ -95,7 +97,7 @@ export class BlazingHeaderElement extends View<Model, Msg> {
               </ul>
             </drop-down>
           ` : html`
-            <a href="login.html" class="signin">Sign in</a>
+            <a href="login.html" class="signin" @click=${signInUser}>Sign in</a>
           `}
         </div>
       </header>
@@ -253,4 +255,8 @@ function toggleDarkMode(ev: InputEvent) {
 
 function signOutUser(ev: Event) {
   Events.relay(ev, "auth:message", ["auth/signout"]);
+}
+
+function signInUser(ev: Event) {
+  Events.relay(ev, "auth:message", ["auth/login"]);
 }
