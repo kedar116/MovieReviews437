@@ -1,5 +1,5 @@
-import { LitElement, html, css, TemplateResult } from 'lit';
-import { property, state } from 'lit/decorators.js';
+import { html, css, TemplateResult } from 'lit';
+import { state } from 'lit/decorators.js';
 import { define } from '@calpoly/mustang';
 import { View } from "@calpoly/mustang";
 import { Msg } from "../messages";

@@ -6,8 +6,7 @@ import { Profile } from "server/models";
 import { Movie } from "./server/models/Movie";
 //@ts-ignore
 import { Review } from "./server/models/Review";
-import { model } from "mongoose";
-import { UpdateQuery } from "mongoose";
+
 
 export default function update(
   message: Msg,

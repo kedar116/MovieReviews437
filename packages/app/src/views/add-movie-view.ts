@@ -1,5 +1,5 @@
 import { html, css } from 'lit';
-import { define, View, History } from '@calpoly/mustang';
+import { define, View } from '@calpoly/mustang';
 import { Model } from "../model";
 import { Msg } from "../messages";
 

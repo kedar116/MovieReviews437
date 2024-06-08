@@ -1,4 +1,4 @@
-import { LitElement, css, html } from "lit";
+import { css, html } from "lit";
 import { Auth, Dropdown, define } from "@calpoly/mustang";
 import { Events, Observer, View } from "@calpoly/mustang";
 

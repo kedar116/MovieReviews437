@@ -1,6 +1,6 @@
-import { LitElement, html, css } from 'lit';
+import {html, css } from 'lit';
 import { define, Form, History, View } from '@calpoly/mustang';
-import { property, state } from 'lit/decorators.js';
+import {  state } from 'lit/decorators.js';
 import { Msg } from "../messages";
 import { Model } from "../model";
 import { Review } from 'server/models';

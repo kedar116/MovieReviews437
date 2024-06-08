@@ -1,4 +1,4 @@
-import { LitElement, html, css, TemplateResult } from 'lit';
+import { html, css, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { Auth, define, Events, Observer } from '@calpoly/mustang';
 import { View } from "@calpoly/mustang";
